@@ -1,0 +1,58 @@
+ 
+
+------ LEX ------
+%{
+#include<stdio.h>
+int sl=0;
+int ml=0;
+%}
+%option noyywrap
+%%
+"/*"[a-zA-Z0-9' '\t\n]+"*/" ml++;
+"//".* sl++;
+%%
+void main()
+{
+yyin=fopen("f1.c","r");
+yyout=fopen("f2.c","w");
+yylex();
+fclose(yyin);
+fclose(yyout);
+printf("\n Number of single line comments are = %d\n",sl);
+printf("\nNumber of multiline comments are =%d\n",ml); }
+
+
+------ f1.c ------
+#include <stdio.h>
+int a,b;
+//Declararaion part
+void main(){
+/*printing
+*/
+    printf("Hello world")
+
+}
+
+
+
+------ OUTPUT ------
+alphabeta@ashish-dell:~/Desktop/SS_LAB/6a$ cc 6a.c
+alphabeta@ashish-dell:~/Desktop/SS_LAB/6a$ ./a.out
+
+ Number of single line comments are = 1
+
+Number of multiline comments are =1
+alphabeta@ashish-dell:~/Desktop/SS_LAB/6a$ cat f2.c
+#include <stdio.h>
+int a,b;
+
+void main(){
+
+    printf("Hello world")
+
+}
+
+
+
+
+

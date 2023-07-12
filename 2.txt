@@ -1,0 +1,50 @@
+ 
+------ LEX ------
+%{
+#include "y.tab.h"
+%}
+%%
+a {return A;}
+b {return B;}
+[\n] return '\n';
+%%
+
+
+------ YACC ------
+%{
+#include<stdio.h>
+#include<stdlib.h>
+%}
+%token A B
+%%
+input:s'\n' {
+            printf("Successful Grammar\n");
+            exit(0);
+            }
+s: A s1 B | B
+s1: ; | A s1
+%%
+main()
+{
+    printf("Enter A String\n");
+    yyparse();
+}
+int yyerror()
+{
+    printf("Error \n");
+    exit(0);
+}
+
+
+------ OUTPUT ------
+alphabeta@ashish-dell:~/Desktop/SS_LAB/2$ yacc -d 2.y
+alphabeta@ashish-dell:~/Desktop/SS_LAB/2$ lex 2.l
+alphabeta@ashish-dell:~/Desktop/SS_LAB/2$ cc y.tab.c lex.yy.c -ll
+alphabeta@ashish-dell:~/Desktop/SS_LAB/2$ ./a.out
+Enter A String
+aaab
+Successful Grammar
+
+
+
+

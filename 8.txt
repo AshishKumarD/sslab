@@ -1,0 +1,108 @@
+------ JAVA PROGRAM ------
+import java.util.*;
+
+public class Banker {
+    static int safe[] = new int[20];
+
+    static boolean safety(int a[], int all[][], int need[][]) {
+        int check = 0, count = 0;
+        int n = all.length;
+        boolean finish[] = new boolean[n];
+        for (int i = 0; i < finish.length; i++)
+            finish[i] = false;
+
+        do {
+            for (int i = 0; i < n; i++) {
+                boolean flag = true;
+                if (finish[i] == false) {
+                    for (int j = 0; j < a.length; j++) {
+                        if (a[j] < need[i][j])
+                            flag = false;
+                    }
+                    if (flag) {
+                        for (int j = 0; j < a.length; j++)
+                            a[j] += all[i][j];
+                        safe[check] = i;
+                        check++;
+                        finish[i] = true;
+                    }
+                }
+            }
+            count++;
+        } while (check < n && count < n);
+        if (check == n)  //resources couldn't be allocated to any process
+            return false;
+        else
+            return true;
+    }
+
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+        int n, m;
+        System.out.println("enter no. of processes and resources:");
+        n = sc.nextInt();
+        m = sc.nextInt();
+        int a[] = new int[m];
+        System.out.println("enter no. of available instances resources:");
+        for (int i = 0; i < m; i++) {
+            a[i] = sc.nextInt();
+        }
+        int al[][] = new int[n][m];
+        int max[][] = new int[n][m];
+        int need[][] = new int[n][m];
+        for (int i = 0; i < n; i++) {
+            System.out.println("enter allocation instances of resources for process p" + i);
+            for (int j = 0; j < m; j++) {
+                al[i][j] = sc.nextInt();
+            }
+            System.out.println("enter max instances of resources for process p" + i);
+            for (int j = 0; j < m; j++) {
+                max[i][j] = sc.nextInt();
+                need[i][j] = max[i][j] - al[i][j];
+            }
+        }
+        if (safety(a, al, need)) {
+            System.out.println("System in Safe State");
+            System.out.println("System's Safe sequence:");
+            for (int i = 0; i < n; i++)
+                System.out.print("p" + safe[i] + "\t");
+        } else
+            System.out.println("System in UnSafe State");
+    }
+}
+
+
+ ------ OUTPUT ------
+ GATE SMASHERS EXAMPLE
+ Note:- The process starts from 0 in this program
+
+alphabeta@ashish-dell:~/Desktop/SS_LAB/8$ java 8.java
+enter no. of processes and resources:
+5 3
+enter no. of available instances resources:
+3 3 2
+enter allocation instances of resources for process p0
+0 1 0
+enter max instances of resources for process p0
+7 5 3
+enter allocation instances of resources for process p1
+2 0 0
+enter max instances of resources for process p1
+3 2 2
+enter allocation instances of resources for process p2
+3 0 2
+enter max instances of resources for process p2
+9 0 2
+enter allocation instances of resources for process p3
+2 1 1
+enter max instances of resources for process p3
+4 2 2
+enter allocation instances of resources for process p4
+0 0 2
+enter max instances of resources for process p4
+5 3 3
+System in Safe State
+System's Safe sequence:
+p1      p3      p4      p0      p2
+
+

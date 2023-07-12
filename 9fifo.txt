@@ -1,0 +1,70 @@
+------ JAVA PROGRAM ------
+import java.util.*;
+
+public class FIFO
+{
+
+    public static void main(String args[]){
+        int capacity;
+        Scanner sc = new Scanner(System.in);
+        System.out.println("Enter the number of frames");
+        capacity = sc.nextInt();
+        HashSet<Integer> s = new HashSet<>(capacity);
+        Queue<Integer> indexes = new LinkedList<>();  //FIFO
+
+        System.out.println("Enter the number of Pages");
+        int pages[] = new int[sc.nextInt()];
+
+        System.out.println("Enter the Pages");
+
+        for(int i =0 ; i<pages.length; i++)
+        pages[i] = sc.nextInt();
+        int page_faults=0;
+
+        for(int i:pages)
+        {
+            if (!s.contains(i))
+            {
+                if(s.size() == capacity){
+                    int val = indexes.peek();
+                    indexes.poll();
+                    s.remove(val);
+                }
+                s.add(i);
+                indexes.add(i);
+                page_faults++;
+                System.out.println(s+"\tPage Fault");
+            }
+            else
+                System.out.println(s+"\tHit");
+        }
+        System.out.println(page_faults);
+    }
+}
+
+ ------ OUTPUT ------
+ GATE SMASHERS EXAMPLE
+
+alphabeta@ashish-dell:~/Desktop/SS_LAB/9$ java fifo.java
+Enter the number of frames
+3
+Enter the number of Pages
+15
+Enter the Pages
+7 0 1 2 0 3 0 4 2 3 0 3 1 2 0
+[7]     Page Fault
+[0, 7]  Page Fault
+[0, 1, 7]       Page Fault
+[0, 1, 2]       Page Fault
+[0, 1, 2]       Hit
+[1, 2, 3]       Page Fault
+[0, 2, 3]       Page Fault
+[0, 4, 3]       Page Fault
+[0, 4, 2]       Page Fault
+[4, 2, 3]       Page Fault
+[0, 2, 3]       Page Fault
+[0, 2, 3]       Hit
+[0, 1, 3]       Page Fault
+[0, 1, 2]       Page Fault
+[0, 1, 2]       Hit
+12

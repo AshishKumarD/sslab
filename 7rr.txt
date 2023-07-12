@@ -1,0 +1,87 @@
+------ JAVA PROGRAM ------
+import java.util.Scanner;
+
+public class RoundRobin {
+    public static void main(String[] args) {
+        int i=0,n, time=0, x, time_quantum;
+        boolean completed = false;
+        int wait_time = 0, turnaround_time = 0;
+        Scanner sn = new Scanner(System.in);
+        int[] at = new int[20];
+        int[] bt = new int[20];
+        int[] rt = new int[20];
+        System.out.println("Enter Total Process:\t ");
+        n = sn.nextInt();
+        x = n;
+        for (i = 0; i < n; i++) {
+            System.out.println("Enter Arrival Time and burst time for Process "+i);
+            at[i] = sn.nextInt();
+            bt[i] = sn.nextInt();
+            rt[i] = bt[i];
+        }
+        System.out.println("Enter Time Quantum:\t");
+        time_quantum = sn.nextInt();
+        System.out.println("\n\nProcess\t|Turnaround Time|Waiting Time");
+        i=0;
+        while (x != 0) {
+            if (rt[i] <= time_quantum && rt[i] > 0) {
+                time += rt[i];
+                rt[i] = 0;
+                completed = true;
+            } else if (rt[i] > 0) {
+                rt[i] -= time_quantum;
+                time += time_quantum;
+            }
+            if (rt[i] == 0 && completed) {
+                x--;
+                System.out.print("process" + i + "\t"+(time - at[i]) + "\t\t"+(time - at[i] - bt[i])+"\n");
+                wait_time += time - at[i] - bt[i];
+                turnaround_time += time - at[i];
+                completed = false;
+            }
+            if (i == n - 1)
+                i = 0;
+            else if (at[i + 1] <= time)
+                i++;
+            else
+                i = 0;
+        }
+        System.out.println("\n Average Waiting Time=" + wait_time * 1.0 / n);
+        System.out.println("Average Turnaround Time =" + turnaround_time * 1.0 / n);
+    }
+}
+------ OUTPUT ------
+GATE SMASHERS EXAMPLE
+4
+0 5
+1 4
+2 2
+4 1
+2
+
+alphabeta@ashish-dell:~/Desktop/SS_LAB/7$ java rr.java
+Enter Total Process:
+4
+Enter Arrival Time and burst time for Process 0
+0 5
+Enter Arrival Time and burst time for Process 1
+1 4
+Enter Arrival Time and burst time for Process 2
+2 2
+Enter Arrival Time and burst time for Process 3
+4 1
+Enter Time Quantum:
+2
+
+
+Process |Turnaround Time|Waiting Time
+process2        4               2
+process3        3               2
+process1        10              6
+process0        12              7
+
+Average Waiting Time=4.25
+Average Turnaround Time =7.25
+
+
+

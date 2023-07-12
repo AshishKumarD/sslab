@@ -1,0 +1,72 @@
+------ JAVA PROGRAM ------
+import java.util.*;
+
+
+public class LRU {
+
+
+    public static void main(String[] args) {
+        int capacity;
+        Scanner sc = new Scanner(System.in);
+        System.out.println("Enter the number of frames");
+        capacity = sc.nextInt();
+        ArrayList<Integer> s=new ArrayList<>(capacity);
+
+        System.out.println("Enter the number of Pages");
+        int pages[] = new int[sc.nextInt()];
+
+        System.out.println("Enter the Pages");
+        for(int i =0 ; i<pages.length; i++)
+        pages[i] = sc.nextInt();
+        int page_faults=0;
+
+        for(int i:pages)
+        {
+            if(!s.contains(i))
+            {
+                if(s.size()==capacity)  s.remove(0);
+                s.add(i);
+                page_faults++;
+                System.out.println(s+"\tPage Fault");
+            }
+            else{
+                s.remove((Object)i);    //IMPORTANT TO TYPECAST
+                s.add(i);
+                System.out.println(s+"\tHit");
+            }
+        }
+        System.out.println(page_faults);
+    }
+}
+
+ ------ OUTPUT ------
+ GATE SMASHERS EXAMPLE
+
+alphabeta@ashish-dell:~/Desktop/SS_LAB/9$ java lru.java
+Enter the number of frames
+4
+Enter the number of Pages
+20
+Enter the Pages
+7 0 1 2 0 3 0 4 2 3 0 3 2 1 2 0 1 7 0 1
+[7]     Page Fault
+[7, 0]  Page Fault
+[7, 0, 1]       Page Fault
+[7, 0, 1, 2]    Page Fault
+[7, 1, 2, 0]    Hit
+[1, 2, 0, 3]    Page Fault
+[1, 2, 3, 0]    Hit
+[2, 3, 0, 4]    Page Fault
+[3, 0, 4, 2]    Hit
+[0, 4, 2, 3]    Hit
+[4, 2, 3, 0]    Hit
+[4, 2, 0, 3]    Hit
+[4, 0, 3, 2]    Hit
+[0, 3, 2, 1]    Page Fault
+[0, 3, 1, 2]    Hit
+[3, 1, 2, 0]    Hit
+[3, 2, 0, 1]    Hit
+[2, 0, 1, 7]    Page Fault
+[2, 1, 7, 0]    Hit
+[2, 7, 0, 1]    Hit
+8
